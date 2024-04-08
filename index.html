@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="CSS/style.css" />
+    <title>Pomodoro app</title>
+  </head>
+  <body>
+    <div id="container">
+      <!-- inizio animazione test -->
+      <div class="text">
+        <p id="callsign">Pomodoro Timer</p>
+      </div>
+      <!-- fine animazione test -->
+
+      <!-- inizio orologio -->
+      <p id="time-display">25:00</p>
+
+      <!-- inizion animazione barra -->
+      <div class="percentage-bar">
+        <div class="counter">
+          <span class="progress">progress</span>
+          <h1>0%</h1>
+          <hr />
+        </div>
+      </div>
+      <!-- fine animazione barra -->
+
+      <!-- inizio bottoni orologio -->
+      <div id="pomodoro-buttons">
+        <button id="start-btn">Start</button>
+        <button id="pause-btn">Stop</button>
+        <button id="reset-btn">Reset</button>
+      </div>
+
+      <!-- inizio input tempo -->
+      <div id="pomodoro-clock-actions">
+        <!-- Work Duration -->
+        <div class="pomodoro-input"></div>
+        <div class="pomodoro-input">
+          <label>Focus</label>
+          <input
+            name="input-work-duration"
+            id="input-work-duration"
+            type="number"
+            min="1"
+          />
+        </div>
+
+        <!-- Break Duration -->
+        <div class="pomodoro-input">
+          <label>Break </label>
+          <input
+            name="input-break-duration"
+            id="input-break-duration"
+            type="number"
+            min="1"
+          />
+        </div>
+
+        <!-- Settion Numberk-->
+        <div class="pomodoro-input">
+          <label>Settions </label>
+          <input
+            name="input-session-number"
+            id="input-session-number"
+            type="number"
+            min="1"
+          />
+        </div>
+      </div>
+    </div>
+    <script src="JS/script.js"></script>
+  </body>
+</html>
