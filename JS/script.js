@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //TODO: rendere il pulsante reset hidden all'inizio perchè da problemi 
     //TODO: Eliminare il tasto pausa
+    //TODO: Eliminare animazioni inutili
 
 
     // Variables
@@ -60,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // buttons
     const startBtn = document.getElementById('start-btn');
-    const pauseBtn = document.getElementById('pause-btn');
     const resetBtn = document.getElementById('reset-btn');
 
 
@@ -70,7 +70,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Buttons functions
     startBtn.addEventListener('click', function () {
-        currentTypeSession = "work";      //                      chi mi dice che quando clicco start io non sia in break mode ?
+        // add class show to resetBtn
+        resetBtn.classList.add("show");
+        startBtn.classList.add("hide");
+        currentTypeSession = "work";
         startAnimation();
 
         if (isClockRunning) {
@@ -83,31 +86,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    pauseBtn.addEventListener('click', function () {
-        stopAnimation();
-        if (isClockStopped) {
-            return;
-        }
-        else {
-            isClockRunning = false;
-            isClockStopped = true;
-            swithClockState(false);
-        }
-    });
 
     resetBtn.addEventListener('click', function () {
         currentTypeSession = "base";
+        resetBtn.classList.remove("show");
+        startBtn.classList.remove("hide");
         stopAnimation();
+        changeTheme();
 
         document.getElementById("callsign").innerHTML = "Pomodoro Timer";
         // caso di bug
         setTimeout(() => {
-
             document.getElementById("callsign").innerHTML = "Pomodoro Timer";
-        }, 1000);
+            changeTheme();
+        }, 2000);
 
         swithClockState(true);
     });
+
+
+
 
     // Timer functions 
     const swithClockState = (reset) => {
@@ -311,27 +309,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // work session
 
+    let p = document.querySelectorAll("p");
+    let container = document.querySelector("#container");
+    let button = document.querySelectorAll("button");
+    let label = document.querySelectorAll("label");
+    let hr = document.querySelector("hr");
+    let h1 = document.querySelector("h1");
+
+    let purple = "rgb(123, 31, 162)";
+    let violet = "  rgb(103, 58, 183)";
+    let pink = " rgb(244, 143, 177)";
+
+    let buttonHoverCssWork = `button:hover{
+        background-color: ${purple};
+        color: rgb(255, 255, 255);
+        text-shadow: 0 0 15px ${purple}, 0 0 40px ${purple}; } `;
+
+    let buttonHoverCssBrak = `button:hover{
+        background-color: red;
+        color: rgb(255, 255, 255);
+       text-shadow: 0 0 15px ${purple}, 0 0 40px ${purple}; } `;
+
     function changeTheme() {
-        let p = document.querySelectorAll("p");
-        let container = document.querySelector("#container");
-        let button = document.querySelectorAll("button");
-        let label = document.querySelectorAll("label");
-        let hr = document.querySelector("hr");
-        let h1 = document.querySelector("h1");
-
-
-
         if (currentTypeSession == "break") {
             p.forEach(element => {
-                element.style.animation = "background-pan 3s linear infinite"
                 element.style.background = "linear-gradient(to right, #7bcabb, #edc531, #453b16, #b6a373)";
-                element.style.backgroundClip = "text";
             });
             hr.style.color = "#baad23";
             container.style.backgroundColor = "antiquewhite";
             button.forEach(element => {
                 element.style.backgroundColor = "rgb(227, 97, 97)";
                 element.style.color = "#000";
+                element.style.transition = "0.5s";
+                element.style.cssText = buttonHoverCssBrak;
+
             });
             label.forEach(element => {
                 element.style.color = "#000";
@@ -339,24 +350,20 @@ document.addEventListener('DOMContentLoaded', function () {
             h1.style.color = "#1c37ab";
 
         }
+
+
         else {
             p.forEach(element => {
-                element.style.animation = "background-pan 3s linear infinite";
-                element.style.background = "linear-gradient(to right, var(--purple), var(--violet), var(--pink), var(--purple))";
-                element.style.backgroundClip = "text";
-                element.style.webkitBackgroundClip = "text";
-                element.style.webkitTextFillColor = "transparent";
-                element.animate([
-                    { backgroundPosition: "0% center" },
-                    { backgroundPosition: "-200% center" }
-                ], { duration: 3000, iterations: Infinity });
-
+                element.style.background = `linear-gradient(to right,${purple} ,${violet}, ${pink}, #6b3980)`;
             });
             hr.style.color = "#f60d54";
-            container.style.backgroundColor = "var(--bblack)";
+            container.style.backgroundColor = "rgb(10, 10, 10)";
             button.forEach(element => {
                 element.style.backgroundColor = "rgb(45,45,45,1)";
                 element.style.color = "#999";
+                element.style.transition = "0.5s";
+                element.style.cssText = buttonHoverCssWork;
+
             });
             label.forEach(element => {
                 element.style.color = "white";
@@ -370,5 +377,5 @@ document.addEventListener('DOMContentLoaded', function () {
     // call the function
     setInterval(() => {
         changeTheme();
-    }, 1000);
+    }, 3000);
 });

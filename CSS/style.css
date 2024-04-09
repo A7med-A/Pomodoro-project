@@ -40,7 +40,7 @@ body {
 }
 
 p {
-  animation: background-pan 3s linear infinite;
+  animation: background-pan 3s linear infinite !important;
   background: linear-gradient(
     to right,
     var(--purple),
@@ -49,13 +49,13 @@ p {
     var(--purple)
   );
   white-space: nowrap;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
   font-size: 4em;
   font-weight: 800;
 
-  background-size: 200%;
+  background-size: 200% !important; /* questo mi ha salvato l'animazione  :) */
 }
 
 @keyframes background-pan {
@@ -102,6 +102,10 @@ button {
   letter-spacing: 0.2em;
 }
 
+#reset-btn {
+  display: none;
+}
+
 button:hover {
   background-color: var(--purple);
   color: rgb(255, 255, 255);
@@ -112,8 +116,11 @@ button:active {
   transform: scale(0.9);
 }
 
-.hidden {
-  display: none;
+.show {
+  display: inline-block !important;
+}
+.hide {
+  display: none !important;
 }
 
 /* Inputs */
@@ -173,6 +180,7 @@ hr {
 
   color: #f60d54;
   height: 5px;
+
   border-width: 0 0 4px;
   border-style: solid;
 }
