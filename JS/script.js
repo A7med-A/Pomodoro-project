@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
     sessionNumberInput.addEventListener('input', function () {
-        updateSessionNumber = minToSec(this.value);
+        updateSessionNumber = this.value;
     }
     );
 
@@ -70,6 +70,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Buttons functions
     startBtn.addEventListener('click', function () {
+        themeInterval = setInterval(() => {
+            changeTheme();
+        }, 1000);
+
         // add class show to resetBtn
         resetBtn.classList.add("show");
         startBtn.classList.add("hide");
@@ -91,14 +95,15 @@ document.addEventListener('DOMContentLoaded', function () {
         currentTypeSession = "base";
         resetBtn.classList.remove("show");
         startBtn.classList.remove("hide");
-        stopAnimation();
+        clearInterval(themeInterval);
         changeTheme();
+        stopAnimation();
 
         document.getElementById("callsign").innerHTML = "Pomodoro Timer";
         // caso di bug
         setTimeout(() => {
             document.getElementById("callsign").innerHTML = "Pomodoro Timer";
-            changeTheme();
+
         }, 2000);
 
         swithClockState(true);
@@ -130,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const resetClock = () => {
         currentTypeSession = "base";
+        document.getElementById("callsign").innerHTML = "Pomodoro Timer";
         stopAnimation();
         updateTimerValues();
         clearInterval(clockTimer);
@@ -189,6 +195,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (sessionCounter == sessionNumber) {
                 currentTypeSession = "base";
                 console.log("fineeee");           // debug
+                resetBtn.classList.remove("show");
+                startBtn.classList.remove("hide");
                 resetClock();
             }
         }
@@ -203,7 +211,9 @@ document.addEventListener('DOMContentLoaded', function () {
         else {
             timeLeft = updateBreakDuration ? updateBreakDuration : breakDuration;
             breakDuration = timeLeft;
+            sessionNumber = updateSessionNumber ? updateSessionNumber : sessionNumber;
             currentTypeSession = "break";
+
         }
     };
 
@@ -222,16 +232,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const restArray = [
         "Rest and recharge.",
         "Gift yourself rest.",
-        "Relax your body, calm your mind.",
+        "Relax your body",
+        "Calm your mind",
+        "Rest and recover.",
+        "Take a break.",
+        "Breathe. Relax.",
     ];
     const workArray = [
-        "Focus sharpens your path to success.",
+        "Focus sharpens your path.",
         "Focus for success.",
-        "Clear mind, high productivity.",
-        "Focus on what matters most.",
-        "Concentration conquers challenges.",
-        "Determined focus overcomes all.",
+        "Clear your mind",
+        "Focus on what matters.",
+        "Concentrate.",
+        "Determination overcomes all.",
         "Breathe. Center. Focus.",
+        "Focus on your goals.",
+        "Stay focused.",
+        "Stay determined.",
+
     ]
 
 
@@ -316,19 +334,27 @@ document.addEventListener('DOMContentLoaded', function () {
     let hr = document.querySelector("hr");
     let h1 = document.querySelector("h1");
 
+    let resetButton = document.querySelector("#reset-btn");
+    let startButton = document.querySelector("#start-btn");
+
     let purple = "rgb(123, 31, 162)";
     let violet = "  rgb(103, 58, 183)";
     let pink = " rgb(244, 143, 177)";
 
     let buttonHoverCssWork = `button:hover{
-        background-color: ${purple};
-        color: rgb(255, 255, 255);
-        text-shadow: 0 0 15px ${purple}, 0 0 40px ${purple}; } `;
+        background-color: ${purple} !important;
+        color: rgb(255, 255, 255) !important;
+        text-shadow: 0 0 15px ${purple}, 0 0 40px ${purple} ;
+      } `;
 
-    let buttonHoverCssBrak = `button:hover{
-        background-color: red;
-        color: rgb(255, 255, 255);
-       text-shadow: 0 0 15px ${purple}, 0 0 40px ${purple}; } `;
+    let buttonHoverCssBreak = `button:hover{
+        background-color: rgb(255,0,0) !important;
+        color: rgb(255, 255, 255) !important;
+        text-shadow: 0 0 15px ${purple}, 0 0 40px ${purple}; 
+    } `;
+
+    let style = document.createElement('style');
+
 
     function changeTheme() {
         if (currentTypeSession == "break") {
@@ -337,13 +363,16 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             hr.style.color = "#baad23";
             container.style.backgroundColor = "antiquewhite";
-            button.forEach(element => {
-                element.style.backgroundColor = "rgb(227, 97, 97)";
-                element.style.color = "#000";
-                element.style.transition = "0.5s";
-                element.style.cssText = buttonHoverCssBrak;
+            ;
 
-            });
+            startButton.style.backgroundColor = "rgba(227, 97, 97,1)";
+            startButton.style.color = "#000";
+
+            resetButton.style.backgroundColor = "rgba(227, 97, 97,1)";
+            resetButton.style.color = "#000";
+
+            style.innerHTML = buttonHoverCssBreak;
+
             label.forEach(element => {
                 element.style.color = "#000";
             });
@@ -357,25 +386,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 element.style.background = `linear-gradient(to right,${purple} ,${violet}, ${pink}, #6b3980)`;
             });
             hr.style.color = "#f60d54";
-            container.style.backgroundColor = "rgb(10, 10, 10)";
-            button.forEach(element => {
-                element.style.backgroundColor = "rgb(45,45,45,1)";
-                element.style.color = "#999";
-                element.style.transition = "0.5s";
-                element.style.cssText = buttonHoverCssWork;
+            container.style.backgroundColor = "rgba(10, 10, 10,1)";
 
-            });
+
+            resetButton.style.backgroundColor = "rgb(45,45,45)";
+            resetButton.style.color = "#999";
+
+            startButton.style.backgroundColor = "rgb(45,45,45)";
+            startButton.style.color = "#999";
+
+            style.innerHTML = buttonHoverCssWork;
+
             label.forEach(element => {
                 element.style.color = "white";
             });
             h1.style.color = "white";
         }
 
+        // append the style to the head
+        document.head.appendChild(style);
+
 
     }
 
     // call the function
-    setInterval(() => {
-        changeTheme();
-    }, 3000);
+
 });
